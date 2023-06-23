@@ -65,3 +65,26 @@
   - Collection
     - Title
       - type=string, minLength=1, maxLength=4000
+- System interaction
+  - Will be compiled for different architectures
+  - Requires access to a SQL database
+  - Should not require elevated privileges 
+  - Will interact with:
+    - Go installation (when not compiled)
+    - Filesystem
+      - Executable
+      - Reading configuration files (TODO)
+    - Shell
+      - CLI
+    - Network
+      - API server hosting
+- Code Layout
+  - `cmd/`
+    - `goshelf/`
+      - Will hold shared CLI/API functions via interface
+    - `model/`
+      - Holds the models (e.g., Author, Book, Collection)
+    - `main/`
+      - Entry, gets args & envs and kicks off CLI or API
+    - `http/`
+      - Holds API server
