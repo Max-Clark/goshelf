@@ -43,3 +43,25 @@
     - Types based on PostgreSQL types
     - A book may have multiple authors; limiting to one for brevity
     - A book may fit multiple genres; limiting to one for brevity
+  - ![ER Diagram](_assets/database_er_diagram.svg)
+- Model Validation
+  - Note: Only user entered items below
+  - Author
+    - First Name
+      - type=string, minLength=1, maxLength=255
+    - Last Name
+      - type=string, minLength=1, maxLength=255
+  - Book
+    - Title
+      - type=string, minLength=1, maxLength=4000
+    - Publish Date
+      - type=string, format=date
+    - Edition
+      - type=int, minimum=1, maximum=32767
+    - Description
+      - type=string, maxLength=10000
+    - Genre
+      - type=string, maxLength=255
+  - Collection
+    - Title
+      - type=string, minLength=1, maxLength=4000
