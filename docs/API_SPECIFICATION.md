@@ -16,7 +16,7 @@ The currently supported api versions are:
 
 ### Standard Result Object
 
-The API is guaranteed to return an object for all requests unless explicitly defined. An example is shown beow.
+The API is guaranteed to return an object for all requests unless explicitly defined. An example is shown below.
 
 ```json
 {
