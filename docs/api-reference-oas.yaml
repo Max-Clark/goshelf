@@ -53,6 +53,8 @@ paths:
                         properties:
                           books:
                             $ref: '#/components/schemas/Books' 
+
+
 components:
   parameters:
 
@@ -85,8 +87,6 @@ components:
       type: "object"
       properties:
         book_id:
-          $ref: "#/components/schemas/Serial"
-        author_id:
           $ref: "#/components/schemas/Serial"
         timestamp:
           $ref: "#/components/schemas/Timestamp"
