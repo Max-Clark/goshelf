@@ -108,13 +108,17 @@ func (pg *PgDb) CollectionGet(title *string) (*v1.Collection, error) {
 	return collection, nil
 }
 
-func (pg *PgDb) CollectionRemove(title string) error {
+func (pg *PgDb) CollectionRemove(title *string) error {
+	if title == nil {
+		return nil
+	}
+
 	queryStr := fmt.Sprintf(`
 		DELETE FROM %s.collection c
 		WHERE c.title = $1
 	`, pg.SchemaVersion)
 
-	rows, err := pg.SqlDb.Query(queryStr, title)
+	rows, err := pg.SqlDb.Query(queryStr, *title)
 
 	if err != nil {
 		return err

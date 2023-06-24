@@ -62,7 +62,7 @@ var _ = Describe("Collection Test", func() {
 					pgDb.BookRemove(bookId)
 				}
 
-				pgDb.CollectionRemove(colTitle)
+				pgDb.CollectionRemove(&colTitle)
 			})
 		})
 

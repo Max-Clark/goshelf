@@ -8,9 +8,10 @@ import (
 
 	"github.com/Max-Clark/goshelf/cmd/db"
 	pg "github.com/Max-Clark/goshelf/cmd/db/postgresql"
-	"github.com/Max-Clark/goshelf/cmd/http"
 	v1 "github.com/Max-Clark/goshelf/cmd/model/v1"
 )
+
+const SchemaVersion = "v1"
 
 type GoshelfConfig struct {
 	RunApi   bool
@@ -22,18 +23,17 @@ type GoshelfConfig struct {
 
 type GoshelfQuerier interface {
 	Connect() error
-	BookCreate(*v1.Book) (*int, error)
-	BookGet(int) (*v1.Book, error)
-	BookRemove(int) error
-	BookFilter(*string, *string, *int) ([]v1.Book, error)
-	CollectionCreate(*string, []int) (*string, error)
-	CollectionGet(*string) (*v1.Collection, error)
-	CollectionRemove(string) error
+	BookCreate(b *v1.Book) (*int, error)
+	BookGet(id int) (*v1.Book, error)
+	BookRemove(id int) error
+	BookFilter(title *string, genre *string, edition *int) ([]v1.Book, error)
+	CollectionCreate(title *string, bookIds []int) (*string, error)
+	CollectionGet(title *string) (*v1.Collection, error)
+	CollectionRemove(title *string) error
 }
 
-func ApiStart(cfg GoshelfConfig) error {
-	http.StartServer(cfg.Host+":"+fmt.Sprint(cfg.Port), []http.PathFunction{})
-	return nil
+func ApiStart(cfg GoshelfConfig) {
+	StartServer(cfg.Host + ":" + fmt.Sprint(cfg.Port))
 }
 
 func CliStart(cfg GoshelfConfig, flagSet *flag.FlagSet) {

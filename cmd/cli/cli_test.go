@@ -28,7 +28,8 @@ var _ = Describe("Cli", func() {
 		r := &R{}
 
 		It("should get a valid string", func() {
-			GetCliPrompt("test prompt", r)
+			prompt := "test prompt"
+			GetCliPrompt(&prompt, r)
 		})
 
 		// TODO: add more tests
