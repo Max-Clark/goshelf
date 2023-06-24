@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -23,10 +24,10 @@ var pgDb = PgDb{
 
 func TestPostgres(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "CLI Suite")
+	RunSpecs(t, "Postgres Suite")
 }
 
-var _ = Describe("Postgres", func() {
+var _ = Describe("Postgres Test", func() {
 
 	Context("Connect", func() {
 		It("Should successfully connect", func() {
@@ -43,11 +44,13 @@ var _ = Describe("Postgres", func() {
 		desc := "What a cool book"
 		genre := "horror"
 		edition := 1
-		goodBook := v1.Book{
-			Author: v1.Author{
-				FirstName: "testfirst",
-				LastName:  "testlast",
-			},
+		newAuthor := v1.Author{
+			FirstName: "testfirst" + fmt.Sprint(time.Now().UnixMilli()),
+			LastName:  "testlast" + fmt.Sprint(time.Now().UnixMilli()),
+		}
+
+		newAuthorBook := v1.Book{
+			Author:      newAuthor,
 			Title:       "testtitle",
 			PublishDate: &now,
 			Edition:     &edition,
@@ -55,8 +58,17 @@ var _ = Describe("Postgres", func() {
 			Genre:       &genre,
 		}
 
-		It("Should save a book", func() {
-			pgDb.BookCreate(goodBook)
+		It("Should save and return a book with a new author", func() {
+			savedId, err := pgDb.BookCreate(&newAuthorBook)
+			Expect(err).To(BeNil())
+			Expect(savedId).ToNot(BeNil())
+
+			book, err := pgDb.BookGet(*savedId)
+			Expect(err).To(BeNil())
+			Expect(book).ToNot(BeNil())
+
+			Expect(book.Author.FirstName).To(Equal(newAuthor.FirstName))
+			Expect(book.Author.LastName).To(Equal(newAuthor.LastName))
 		})
 
 		// TODO: add more tests
