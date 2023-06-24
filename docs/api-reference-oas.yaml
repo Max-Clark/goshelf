@@ -88,8 +88,199 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericFailure'
 
+
+  /book/{book_id}:
+    get:
+      tags:
+        - Books
+      summary: Returns a book by ID
+      operationId: BookGet
+      parameters:
+        - $ref: "#/components/parameters/BookIdPath"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          book:
+                            $ref: '#/components/schemas/Book' 
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+    delete:
+      tags:
+        - Books
+      summary: Removes a book from the database
+      operationId: BookDelete
+      parameters:
+        - $ref: "#/components/parameters/BookIdPath"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+
+
+  /collection:
+    get:
+      tags:
+        - Collections
+      summary: Searches and returns a list of collections based on query values
+      description: |
+        Returns a list of collections based on query values. If no query parameters match the parameters below, 
+        all collections are returned. If no collections found with query, an empty array is returned and is considered a successful operation.
+      operationId: CollectionFilter
+      parameters:
+        - $ref: "#/components/parameters/TitleQuery"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          collections:
+                            $ref: '#/components/schemas/Collections' 
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+    post:
+      tags:
+        - Collections
+      summary: Creates a collection in the database
+      operationId: CollectionCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collection"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+
+
+  /collection/{collection_title}:
+    get:
+      tags:
+        - Collections
+      summary: Returns a collection by ID
+      operationId: CollectionGet
+      parameters:
+        - $ref: "#/components/parameters/CollectionTitlePath"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          collection:
+                            $ref: '#/components/schemas/Collection' 
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+    delete:
+      tags:
+        - Collections
+      summary: Removes a collection from the database
+      operationId: CollectionDelete
+      parameters:
+        - $ref: "#/components/parameters/CollectionTitlePath"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
+
+
 components:
   parameters:
+    BookIdPath:
+      name: book_id
+      in: path
+      description: Book ID
+      schema: 
+        $ref: '#/components/schemas/Serial' 
+      required: true
+
+      
+    CollectionTitlePath:
+      name: collection_title
+      in: path
+      description: Collection title
+      schema: 
+        $ref: '#/components/schemas/Title' 
+      required: true
 
     TitleQuery:
       name: title
@@ -114,6 +305,8 @@ components:
       schema: 
         $ref: '#/components/schemas/Genre' 
       required: false
+                
+
   schemas:
     # Main schemas
     Book:
@@ -171,6 +364,11 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/Book"
+
+    Collections:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Collection"
 
     # Sub schemas
     Serial:
