@@ -4,17 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
-
-	"github.com/Max-Clark/goshelf/cmd/db"
 )
-
-type GoshelfConfig struct {
-	RunApi   bool
-	Host     string
-	Port     int
-	DbConfig db.ConnectionConfig
-	Goshelf  GoshelfQuerier
-}
 
 func PrintFlagUsage(w io.Writer, flagSet *flag.FlagSet) {
 	flagSet.VisitAll(func(f *flag.Flag) {

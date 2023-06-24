@@ -6,10 +6,19 @@ import (
 	"log"
 	"os"
 
+	"github.com/Max-Clark/goshelf/cmd/db"
 	pg "github.com/Max-Clark/goshelf/cmd/db/postgresql"
 	"github.com/Max-Clark/goshelf/cmd/http"
 	v1 "github.com/Max-Clark/goshelf/cmd/model/v1"
 )
+
+type GoshelfConfig struct {
+	RunApi   bool
+	Host     string
+	Port     int
+	DbConfig db.ConnectionConfig
+	Goshelf  GoshelfQuerier
+}
 
 type GoshelfQuerier interface {
 	Connect() error
