@@ -29,12 +29,16 @@ The API is guaranteed to return an object for all requests unless explicitly def
 }
 ```
 
+### Type
+
+The only currently supported type are synchronous commands, so `"sync"` will always be returned.
+
 ### Status
 
 Goshelf uses two `status` keys:
 
-- `Success`
-- `Failure`
+- `"Success"`
+- `"Failure"`
 
 
 ### Status Code
@@ -46,4 +50,6 @@ Code | Meaning
 200 | Success
 400 | Failure
 
+## Standard HTTP Methods
 
+The bookshelf API supports GET, PUT, POST, and DELETE HTTP methods.
