@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info:
+  title: goshelf
+  description: |-
+    This is the REST API definition for goshelf, a demo I (Max Clark) created for my Canonical assessment. Thanks for viewing!
+  contact:
+    email: clark.max.a@gmail.com
+  license:
+    name: MIT
+  version: 1.0.0
+servers:
+  - url: http://0.0.0.0/api/v1
+
+# /api/v1/book:
+#     GET - lists books (optional filter)
+#     POST - create book
+# /api/v1/books/{id}
+#     GET - get book
+#     DELETE - delete book
+# /api/v1/collection:
+#     GET - lists collections (no filter)
+#     POST - create collection
+# /api/v1/collection/{id}
+#     GET - get collection
+#     DELETE - delete collection
