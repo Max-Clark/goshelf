@@ -45,7 +45,7 @@ components:
         edition:
           $ref: '#/components/schemas/Edition'
         genre:
-          $ref: '#/components/schemas/Edition'
+          $ref: '#/components/schemas/Genre'
         description:
           $ref: '#/components/schemas/Description'
       required:
