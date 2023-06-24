@@ -246,11 +246,57 @@ func (pg *PgDb) BookFilter(title *string, genre *string, edition *int) ([]v1.Boo
 
 	return ScanReturnedBooks(rows)
 }
-func (pg *PgDb) CollectionCreate(title *string, bookIds *[]int) (*int, error) {
-	return nil, nil
+func (pg *PgDb) CollectionCreate(title *string, bookIds []int) (*string, error) {
+	queryStr := fmt.Sprintf(`
+		INSERT INTO %s.collection (title)
+		VALUES ($1)
+	`, pg.SchemaVersion)
+
+	rows, err := pg.SqlDb.Query(queryStr, title)
+
+	if err != nil {
+		return nil, err
+	}
+
+	rows.Close()
+
+	if len(bookIds) > 0 {
+		queryStr = fmt.Sprintf(`
+		INSERT INTO %s.collection_books (title,book_id)
+		VALUES `, pg.SchemaVersion)
+
+		values := make([]string, len(bookIds))
+		for i := 0; i < len(bookIds); i++ {
+			values[i] = " ( $1, $" + fmt.Sprint(i+2) + " ) " // $1 == title, so index + 2
+		}
+
+		queryStr += strings.Join(values, ",")
+
+		// Create varargs for query function
+		varArgs := make([]interface{}, len(bookIds)+1)
+
+		varArgs[0] = title
+		for i := 0; i < len(bookIds); i++ {
+			varArgs[i+1] = bookIds[i]
+		}
+
+		rows, err := pg.SqlDb.Query(queryStr, varArgs...)
+
+		if err != nil {
+			return nil, err
+		}
+
+		rows.Close()
+	}
+
+	return title, nil
 }
 
-func (pg *PgDb) CollectionGet(title string) (*v1.Collection, error) {
+func (pg *PgDb) CollectionGet(title *string) (*v1.Collection, error) {
+	if title == nil {
+		return nil, nil
+	}
+
 	queryStr := fmt.Sprintf(`
 		SELECT * FROM %s.collection c WHERE c.title = $1
 	`, pg.SchemaVersion)
@@ -279,6 +325,7 @@ func (pg *PgDb) CollectionGet(title string) (*v1.Collection, error) {
 		FROM %s.collection_books cb
 		INNER JOIN %s.book b ON cb.book_id = b.book_id
 		INNER JOIN %s.author a ON b.author_id = a.author_id 
+		WHERE cb.title = $1
 	`, pg.SchemaVersion, pg.SchemaVersion, pg.SchemaVersion)
 
 	rows, err = pg.SqlDb.Query(queryStr, title)

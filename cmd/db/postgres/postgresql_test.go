@@ -48,7 +48,7 @@ func BookFactory() *v1.Book {
 	}
 }
 
-var _ = Describe("Postgres Test", func() {
+var _ = Describe("Book Test", func() {
 
 	Context("Connect", func() {
 		It("Should successfully connect", func() {
@@ -80,9 +80,11 @@ var _ = Describe("Postgres Test", func() {
 
 		Context("BookRead", func() {
 			var bookId *int
+			var err error
+
 			BeforeEach(func() {
 				newBook := BookFactory()
-				bookId, err := pgDb.BookCreate(newBook)
+				bookId, err = pgDb.BookCreate(newBook)
 				Expect(err).To(BeNil())
 				Expect(bookId).ToNot(BeNil())
 			})
@@ -102,9 +104,10 @@ var _ = Describe("Postgres Test", func() {
 
 		Context("BookRemove", func() {
 			var bookId *int
+			var err error
 			BeforeEach(func() {
 				newBook := BookFactory()
-				bookId, err := pgDb.BookCreate(newBook)
+				bookId, err = pgDb.BookCreate(newBook)
 				Expect(err).To(BeNil())
 				Expect(bookId).ToNot(BeNil())
 			})
@@ -137,8 +140,10 @@ var _ = Describe("Postgres Test", func() {
 		Context("BookFilter", func() {
 			var booksToSave []v1.Book
 			var bookIds []*int
+			const bookCardinality = 5
+
 			BeforeEach(func() {
-				for i := 0; i < 5; i++ {
+				for i := 0; i < bookCardinality; i++ {
 					newBook := BookFactory()
 					newBook.Title += fmt.Sprint(i) + "_" + fmt.Sprint(time.Now().UnixMicro())
 					*newBook.Genre += fmt.Sprint(i) + "_" + fmt.Sprint(time.Now().UnixMicro())
@@ -169,23 +174,67 @@ var _ = Describe("Postgres Test", func() {
 				}
 			})
 		})
+		// TODO: add more tests
+	})
 
-		It("Should filter", func() {
-			for i := 0; i < 5; i++ {
+})
 
-			}
-			newBook := BookFactory()
+var _ = Describe("Collection Test", func() {
 
-			savedId, err := pgDb.BookCreate(newBook)
+	Context("Connect", func() {
+		It("Should successfully connect", func() {
+			err := pgDb.Connect()
 			Expect(err).To(BeNil())
-			Expect(savedId).ToNot(BeNil())
+		})
+	})
 
-			err = pgDb.BookRemove(*savedId)
-			Expect(err).To(BeNil())
+	Context("Collection", func() {
+		err := pgDb.Connect()
+		Expect(err).To(BeNil())
 
-			book, err := pgDb.BookGet(*savedId)
-			Expect(err).To(BeNil())
-			Expect(book).To(BeNil())
+		Context("CollectionCreate", func() {
+			var booksToSave []v1.Book
+			var bookIds []int
+			var colTitle string
+			const bookCardinality = 5
+
+			BeforeEach(func() {
+				bookIds = []int{}
+				booksToSave = []v1.Book{}
+				for i := 0; i < bookCardinality; i++ {
+					newBook := BookFactory()
+					newBook.Title += fmt.Sprint(i) + "_" + fmt.Sprint(time.Now().UnixMicro())
+					*newBook.Genre += fmt.Sprint(i) + "_" + fmt.Sprint(time.Now().UnixMicro())
+					edition := i + 1
+					newBook.Edition = &edition
+					booksToSave = append(booksToSave, *newBook)
+
+					bookId, err := pgDb.BookCreate(newBook)
+					Expect(err).To(BeNil())
+					Expect(bookId).ToNot(BeNil())
+
+					bookIds = append(bookIds, *bookId)
+				}
+			})
+
+			It("Should create a collection", func() {
+				colTitle = "collTestCreate" + fmt.Sprint(time.Now().UnixMicro())
+				title, err := pgDb.CollectionCreate(&colTitle, bookIds)
+				Expect(err).To(BeNil())
+				Expect(*title).To(Equal(colTitle))
+
+				collection, err := pgDb.CollectionGet(&colTitle)
+				Expect(err).To(BeNil())
+				Expect(collection).ToNot(BeNil())
+			})
+
+			AfterEach(func() {
+				for _, bookId := range bookIds {
+					pgDb.BookRemove(bookId)
+				}
+
+				pgDb.CollectionRemove(colTitle)
+			})
 		})
 
 		// TODO: add more tests
