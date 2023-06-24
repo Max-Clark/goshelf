@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Max-Clark/goshelf/cmd/db"
+	pg "github.com/Max-Clark/goshelf/cmd/db/postgresql"
 	"github.com/Max-Clark/goshelf/cmd/goshelf"
 	"github.com/Max-Clark/goshelf/cmd/http"
 )
@@ -17,7 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cfg.Goshelf = &db.PgDb{
+	cfg.Goshelf = &pg.PgDb{
 		Config:        cfg.DbConfig,
 		SchemaVersion: "v1", // TODO: make this dynamic & migrations
 	}

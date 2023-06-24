@@ -9,8 +9,8 @@ type GoshelfQuerier interface {
 	BookCreate(*v1.Book) (*int, error)
 	BookGet(int) (*v1.Book, error)
 	BookRemove(int) error
-	BookFilter(*v1.Book) ([]v1.Book, error)
-	CollectionCreate(*[]int) (*int, error)
+	BookFilter(*string, *string, *int) ([]v1.Book, error)
+	CollectionCreate(*string, *[]int) (*int, error)
 	CollectionGet(int) (*v1.Collection, error)
 	CollectionRemove(int) error
 }
