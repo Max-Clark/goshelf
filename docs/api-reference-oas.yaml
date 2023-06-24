@@ -37,7 +37,9 @@ components:
         timestamp:
           $ref: "#/components/schemas/Timestamp"
         title:
-          $ref: "#/components/schemas/Title"
+          allOf:
+            - $ref: "#/components/schemas/Title"
+            - example: "My favorite books"
         author:
           $ref: "#/components/schemas/Author"
         publish_date:
@@ -65,6 +67,18 @@ components:
           allOf:
             - $ref: "#/components/schemas/Name"
             - example: "Fitzgerald"
+
+    Collection:
+      type: "object"
+      properties:
+        title:
+          allOf:
+            - $ref: "#/components/schemas/Title"
+            - example: "My favorite books"
+        books:
+          type: array
+          items:
+            $ref: "#/components/schemas/Book"
 
     # Sub schemas
     Serial:
