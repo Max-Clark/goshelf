@@ -3,15 +3,15 @@ package cli
 import (
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strings"
 )
 
-func GetCliPrompt(prompt string) (*string, error) {
+func GetCliPrompt(prompt string, reader io.Reader) (*string, error) {
 	fmt.Print(prompt)
 
-	reader := bufio.NewReader(os.Stdin)
-	in, err := reader.ReadString('\n')
+	rdr := bufio.NewReader(reader)
+	in, err := rdr.ReadString('\n')
 
 	if err != nil {
 		return nil, err
