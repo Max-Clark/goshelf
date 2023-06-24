@@ -24,6 +24,34 @@ servers:
 #     GET - get collection
 #     DELETE - delete collection
 
+paths:
+  /book:
+    get:
+      summary: Searches and returns a list of books based on query values
+      operationId: BookFilter
+      parameters:
+            
+        - name: title
+          in: query
+          description: A case-independent in-string search for title
+          schema: 
+            $ref: '#/components/schemas/Title' 
+          required: false
+                
+        - name: edition
+          in: query
+          description: An integer search for edition
+          schema: 
+            $ref: '#/components/schemas/Edition' 
+          required: false
+            
+        - name: genre
+          in: query
+          description: A case-independent in-string search for genre
+          schema: 
+            $ref: '#/components/schemas/Genre' 
+          required: false
+
 components:
   schemas:
     # Main schemas
