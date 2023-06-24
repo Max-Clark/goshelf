@@ -3,7 +3,7 @@ package goshelf
 import (
 	"flag"
 	"fmt"
-	"os"
+	"io"
 
 	"github.com/Max-Clark/goshelf/cmd/db"
 )
@@ -16,16 +16,17 @@ type GoshelfConfig struct {
 	Goshelf  GoshelfQuerier
 }
 
-func PrintHelp() {
-	fmt.Fprintf(os.Stderr, "Custom help %s:\n", os.Args[0])
-
-	flag.VisitAll(func(f *flag.Flag) {
-		fmt.Fprintf(os.Stderr, "    %v\n", f.Usage) // f.Name, f.Value
+func PrintFlagUsage(w io.Writer, flagSet *flag.FlagSet) {
+	flagSet.VisitAll(func(f *flag.Flag) {
+		fmt.Fprintf(w, "\t-%s %v\n", f.Name, f.Usage)
 	})
 }
 
-func InitFlags(args []string) (*GoshelfConfig, error) {
-	cfg := GoshelfConfig{}
+// func GetApiCommand(args []string) (string, error) {
+
+// }
+
+func GetFlagSet(args []string, cfg *GoshelfConfig) *flag.FlagSet {
 	gsFlagSet := flag.NewFlagSet("gsFlagSet", flag.ContinueOnError)
 
 	gsFlagSet.StringVar(&cfg.Host, "s", "0.0.0.0", "API mode: Host address, default 0.0.0.0")
@@ -39,6 +40,13 @@ func InitFlags(args []string) (*GoshelfConfig, error) {
 	gsFlagSet.StringVar(&cfg.DbConfig.DbName, "dn", "postgres", "Database name, default postgres")
 	gsFlagSet.StringVar(&cfg.DbConfig.SslMode, "ds", "disable", "Database SSL mode, default postgres")
 
+	return gsFlagSet
+}
+
+func InitFlags(args []string) (*GoshelfConfig, *flag.FlagSet, error) {
+	cfg := GoshelfConfig{}
+	gsFlagSet := GetFlagSet(args, &cfg)
+
 	var err error
 	if len(args) < 1 {
 		err = gsFlagSet.Parse([]string{})
@@ -47,8 +55,8 @@ func InitFlags(args []string) (*GoshelfConfig, error) {
 	}
 
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return &cfg, nil
+	return &cfg, gsFlagSet, nil
 }
