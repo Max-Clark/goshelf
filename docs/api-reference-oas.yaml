@@ -59,6 +59,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericFailure'
+    post:
+      tags:
+        - Books
+      summary: Creates a book in the database
+      operationId: BookCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
 
 components:
   parameters:
