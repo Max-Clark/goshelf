@@ -111,22 +111,51 @@ func (pg *PgDb) BookCreate(b *v1.Book) (*int, error) {
 		return nil, err
 	}
 
-	queryStr := fmt.Sprintf(`
-		INSERT INTO %s.book (title,publish_date,edition,description,genre,author_id)
-		VALUES              ($1,   $2,          $3,     $4,         $5,   $6       )
-		RETURNING book_id
-	`, pg.SchemaVersion)
+	// TODO: automate this with tags
+	inserts := []string{"title", "author_id"}
+	queryValues := []interface{}{
+		b.Title,
+		authId,
+	}
 
-	publishDate := b.PublishDate.Format(time.RFC3339)
+	if b.PublishDate != nil {
+		inserts = append(inserts, "publish_date")
+		queryValues = append(queryValues, b.PublishDate.Format(time.RFC3339))
+	}
+
+	if b.Edition != nil {
+		inserts = append(inserts, "edition")
+		queryValues = append(queryValues, b.Edition)
+	}
+
+	if b.Description != nil {
+		inserts = append(inserts, "description")
+		queryValues = append(queryValues, b.Description)
+	}
+
+	if b.Genre != nil {
+		inserts = append(inserts, "genre")
+		queryValues = append(queryValues, b.Genre)
+	}
+
+	valueVars := make([]string, len(inserts))
+	for i := 0; i < len(valueVars); i++ {
+		valueVars[i] = "$" + fmt.Sprint(i+1)
+	}
+
+	queryStr := fmt.Sprintf(`
+		INSERT INTO %s.book ( %s )
+		VALUES              ( %s )
+		RETURNING book_id
+	`,
+		pg.SchemaVersion,
+		strings.Join(inserts, " , "),
+		strings.Join(valueVars, " , "),
+	)
 
 	rows, err := pg.SqlDb.Query(
 		queryStr,
-		b.Title,
-		publishDate,
-		*b.Edition,
-		*b.Description,
-		*b.Genre,
-		authId,
+		queryValues...,
 	)
 
 	if err != nil {
