@@ -33,7 +33,7 @@ type GoshelfQuerier interface {
 }
 
 func ApiStart(cfg GoshelfConfig) {
-	StartServer(cfg.Host + ":" + fmt.Sprint(cfg.Port))
+	StartServer(cfg)
 }
 
 func CliStart(cfg GoshelfConfig, flagSet *flag.FlagSet) {
