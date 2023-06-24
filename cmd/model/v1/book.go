@@ -11,3 +11,21 @@ type Book struct {
 	Description  *string    `validator:"optional,minLength=1"`
 	Genre        *string    `validator:"optional"`
 }
+
+func GetEmptyBook() *Book {
+	res := Book{
+		BookId:       0,
+		Title:        "",
+		Publish_date: &time.Time{},
+		Edition:      nil,
+		Description:  nil,
+		Genre:        nil,
+		Author: Author{
+			AuthorId:  0,
+			FirstName: "",
+			LastName:  "",
+		},
+	}
+
+	return &res
+}

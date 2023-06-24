@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/Max-Clark/goshelf/cmd/db"
 	"github.com/Max-Clark/goshelf/cmd/goshelf"
+	"github.com/Max-Clark/goshelf/cmd/http"
 )
 
 func main() {
@@ -23,7 +25,7 @@ func main() {
 	cfg.Goshelf.Connect()
 
 	if cfg.RunApi {
-
+		http.StartServer(cfg.Host+":"+fmt.Sprint(cfg.Port), []http.PathFunction{})
 	} else {
 
 	}
