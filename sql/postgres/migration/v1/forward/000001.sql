@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS v1.book (
 	publish_date timestamp NULL,
 	edition int2 NULL,
 	description text NULL,
-	genre_id serial4 NOT NULL,
+	genre text NULL,
 	CONSTRAINT book_pk PRIMARY KEY (book_id),
 	CONSTRAINT book_author_fk FOREIGN KEY (author_id) REFERENCES v1.author(author_id)
 );

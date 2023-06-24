@@ -17,7 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	cfg.Goshelf = db.PgDb{
+	cfg.Goshelf = &db.PgDb{
 		Config:        cfg.DbConfig,
 		SchemaVersion: "v1", // TODO: make this dynamic & migrations
 	}
