@@ -52,6 +52,20 @@ components:
         - title
         - author
 
+    Author:
+      type: "object"
+      properties:
+        author_id:
+          $ref: "#/components/schemas/Serial"
+        first_name:
+          allOf:
+            - $ref: "#/components/schemas/Name"
+            - example: "Francis"
+        last_name:
+          allOf:
+            - $ref: "#/components/schemas/Name"
+            - example: "Fitzgerald"
+
     # Sub schemas
     Serial:
       type: "integer"
@@ -94,3 +108,8 @@ components:
       minLength: 1
       maxLength: 255
       example: "mystery"
+
+    Name:
+      type: "string"
+      minLength: 1
+      maxLength: 255
