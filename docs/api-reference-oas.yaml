@@ -186,3 +186,23 @@ components:
       type: "string"
       minLength: 1
       maxLength: 255
+
+    # Return schemas
+
+    DefaultSuccessReturn:
+      type: object
+      properties:
+    # "type": "sync",
+    # "status": "Success", // "Success", "Error"
+    # "status_code": 200, // e.g., 400
+        type:
+          default: "sync"
+          type: string
+        status:
+          type: string
+          default: "Success"
+        status_code:
+          type: integer
+          format: int32
+          example: 200
+
