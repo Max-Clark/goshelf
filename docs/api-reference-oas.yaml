@@ -27,32 +27,58 @@ servers:
 paths:
   /book:
     get:
+      tags:
+        - Books
       summary: Searches and returns a list of books based on query values
+      description: |
+        Returns a list of books based on query values. If no query parameters match the parameters below, 
+        all books are returned. If no books found with query, an empty array is returned and is considered a successful operation.
       operationId: BookFilter
       parameters:
-            
-        - name: title
-          in: query
-          description: A case-independent in-string search for title
-          schema: 
-            $ref: '#/components/schemas/Title' 
-          required: false
-                
-        - name: edition
-          in: query
-          description: An integer search for edition
-          schema: 
-            $ref: '#/components/schemas/Edition' 
-          required: false
-            
-        - name: genre
-          in: query
-          description: A case-independent in-string search for genre
-          schema: 
-            $ref: '#/components/schemas/Genre' 
-          required: false
-
+        - $ref: "#/components/parameters/TitleQuery"
+        - $ref: "#/components/parameters/EditionQuery"
+        - $ref: "#/components/parameters/GenreQuery"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/DefaultStatusReturn' 
+                  - type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          books:
+                            $ref: '#/components/schemas/Books' 
 components:
+  parameters:
+
+    TitleQuery:
+      name: title
+      in: query
+      description: A case-independent in-string search for title
+      schema: 
+        $ref: '#/components/schemas/Title' 
+      required: false
+        
+    EditionQuery:
+      name: edition
+      in: query
+      description: An integer search for edition
+      schema: 
+        $ref: '#/components/schemas/Edition' 
+      required: false
+        
+    GenreQuery:
+      name: genre
+      in: query
+      description: A case-independent in-string search for genre
+      schema: 
+        $ref: '#/components/schemas/Genre' 
+      required: false
   schemas:
     # Main schemas
     Book:
@@ -79,8 +105,13 @@ components:
         description:
           $ref: "#/components/schemas/Description"
       required:
-        - title
-        - author
+        - "title"
+        - "author"
+
+    Books:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Book"
 
     Author:
       type: "object"
@@ -104,7 +135,7 @@ components:
             - $ref: "#/components/schemas/Title"
             - example: "My favorite books"
         books:
-          type: array
+          type: "array"
           items:
             $ref: "#/components/schemas/Book"
 
@@ -135,8 +166,8 @@ components:
 
     Edition:
       type: "integer"
-      minLength: 1
-      maxLength: 32767
+      minimum: 1
+      maximum: 32767
       example: 1
 
     Title:
