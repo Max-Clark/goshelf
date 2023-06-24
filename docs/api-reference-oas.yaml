@@ -23,3 +23,74 @@ servers:
 # /api/v1/collection/{id}
 #     GET - get collection
 #     DELETE - delete collection
+
+components:
+  schemas:
+    # Main schemas
+    Book:
+      type: object
+      properties:
+        book_id:
+          $ref: '#/components/schemas/Serial'
+        author_id:
+          $ref: '#/components/schemas/Serial'
+        timestamp:
+          $ref: '#/components/schemas/Timestamp'
+        title:
+          $ref: '#/components/schemas/Title'
+        author:
+          $ref: '#/components/schemas/Author'
+        publish_date:
+          $ref: '#/components/schemas/Date'
+        edition:
+          $ref: '#/components/schemas/Edition'
+        genre:
+          $ref: '#/components/schemas/Edition'
+        description:
+          $ref: '#/components/schemas/Description'
+      required:
+        - title
+        - author
+
+    # Sub schemas
+    Serial:
+      type: integer
+      minimum: 1
+      readOnly: true
+
+    Timestamp:
+        type: string
+        # not sure if this will be RFC3339 which 
+        # date-time is based on
+        format: date-time
+        readOnly: true
+
+    Date:
+        type: string
+        # not sure if this will be RFC3339 which 
+        # date-time is based on
+        format: date
+
+    Description:
+      type: string
+      minLength: 1
+      maxLength: 32767
+      example: A sentence within the description
+      
+    Edition:
+      type: integer
+      minLength: 1
+      maxLength: 32767
+      example: 1
+      
+    Title:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: The Great Gatsby
+      
+    Genre:
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: mystery
