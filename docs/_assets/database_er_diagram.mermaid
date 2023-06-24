@@ -6,8 +6,9 @@ erDiagram
     BOOK {
         serial book_id pk, fk
         serial author_id fk
+        timestamp created_ts
         text title
-        timestamp publish_date "NULLABLE"
+        date publish_date "NULLABLE"
         smallint edition  "NULLABLE"
         text description "NULLABLE"
         text genre "NULLABLE"
@@ -15,9 +16,9 @@ erDiagram
     
     AUTHOR {
         serial author_id pk, fk
+        timestamp created_ts
         text first_name
         text last_name
-        serial genre_id fk
     }
 
     COLLECTION_BOOKS {
