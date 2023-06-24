@@ -1,20 +1,32 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
-	"github.com/Max-Clark/goshelf/cmd/cli"
+	"github.com/Max-Clark/goshelf/cmd/db"
+	"github.com/Max-Clark/goshelf/cmd/goshelf"
 )
 
 func main() {
-	str, err := cli.GetCliPrompt("Hi there: ")
+	cfg, err := goshelf.InitFlags(os.Args)
 
 	if err != nil {
-		log.Fatal("error parsing flags", err)
+		log.Fatal(err)
 	}
 
-	fmt.Print(*str)
+	cfg.Goshelf = db.PgDb{
+		Config:        cfg.DbConfig,
+		SchemaVersion: "v1", // TODO: make this dynamic & migrations
+	}
+
+	cfg.Goshelf.Connect()
+
+	if cfg.RunApi {
+
+	} else {
+
+	}
 
 	// TODO: Set up CLI/API
 }
