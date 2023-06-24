@@ -45,7 +45,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/DefaultStatusReturn' 
+                  - $ref: '#/components/schemas/DefaultSuccessReturn' 
                   - type: object
                     properties:
                       metadata:
@@ -53,7 +53,12 @@ paths:
                         properties:
                           books:
                             $ref: '#/components/schemas/Books' 
-
+        '400':
+          description: Request failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericFailure'
 
 components:
   parameters:
@@ -206,3 +211,15 @@ components:
           format: int32
           example: 200
 
+    GenericFailure:
+      type: object
+      properties:
+        type:
+          default: "sync"
+          type: string
+        status:
+          type: string
+          default: "Failure"
+        status_code:
+          type: integer
+          default: 400
