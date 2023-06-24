@@ -1,15 +1,15 @@
-openapi: 3.1.0
+openapi: "3.1.0"
 info:
-  title: goshelf
+  title: "goshelf"
   description: |-
     This is the REST API definition for goshelf, a demo I (Max Clark) created for my Canonical assessment. Thanks for viewing!
   contact:
-    email: clark.max.a@gmail.com
+    email: "clark.max.a@gmail.com"
   license:
-    name: MIT
-  version: 1.0.0
+    name: "MIT"
+  version: "1.0.0"
 servers:
-  - url: http://0.0.0.0/api/v1
+  - url: "http://0.0.0.0/api/v1"
 
 # /api/v1/book:
 #     GET - lists books (optional filter)
@@ -28,69 +28,69 @@ components:
   schemas:
     # Main schemas
     Book:
-      type: object
+      type: "object"
       properties:
         book_id:
-          $ref: '#/components/schemas/Serial'
+          $ref: "#/components/schemas/Serial"
         author_id:
-          $ref: '#/components/schemas/Serial'
+          $ref: "#/components/schemas/Serial"
         timestamp:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: "#/components/schemas/Timestamp"
         title:
-          $ref: '#/components/schemas/Title'
+          $ref: "#/components/schemas/Title"
         author:
-          $ref: '#/components/schemas/Author'
+          $ref: "#/components/schemas/Author"
         publish_date:
-          $ref: '#/components/schemas/Date'
+          $ref: "#/components/schemas/Date"
         edition:
-          $ref: '#/components/schemas/Edition'
+          $ref: "#/components/schemas/Edition"
         genre:
-          $ref: '#/components/schemas/Genre'
+          $ref: "#/components/schemas/Genre"
         description:
-          $ref: '#/components/schemas/Description'
+          $ref: "#/components/schemas/Description"
       required:
         - title
         - author
 
     # Sub schemas
     Serial:
-      type: integer
+      type: "integer"
       minimum: 1
       readOnly: true
 
     Timestamp:
-        type: string
-        # not sure if this will be RFC3339 which 
-        # date-time is based on
-        format: date-time
-        readOnly: true
+      type: "string"
+      # not sure if this will be RFC3339 which
+      # date-time is based on
+      format: "date-time"
+      readOnly: true
 
     Date:
-        type: string
-        # not sure if this will be RFC3339 which 
-        # date-time is based on
-        format: date
+      type: "string"
+      # not sure if this will be RFC3339 which
+      # date-time is based on
+      format: "date"
 
     Description:
-      type: string
+      type: "string"
       minLength: 1
       maxLength: 32767
-      example: A sentence within the description
-      
+      example: "A sentence within the description"
+
     Edition:
-      type: integer
+      type: "integer"
       minLength: 1
       maxLength: 32767
       example: 1
-      
+
     Title:
-      type: string
+      type: "string"
       minLength: 1
       maxLength: 255
-      example: The Great Gatsby
-      
+      example: "The Great Gatsby"
+
     Genre:
-      type: string
+      type: "string"
       minLength: 1
       maxLength: 255
-      example: mystery
+      example: "mystery"
