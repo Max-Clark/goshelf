@@ -6,15 +6,25 @@ import (
 	"io"
 )
 
-func PrintFlagUsage(w io.Writer, flagSet *flag.FlagSet) {
+func PrintUsage(w io.Writer, flagSet *flag.FlagSet) {
+	fmt.Fprintln(w, "Usage: goshelf [FLAGS] [CLI Command]")
+
 	flagSet.VisitAll(func(f *flag.Flag) {
-		fmt.Fprintf(w, "\t-%s %v\n", f.Name, f.Usage)
+		fmt.Fprintf(w, "\t-%s %v", f.Name, f.Usage)
+		fmt.Fprintln(w)
 	})
+
+	fmt.Fprintln(w)
+	fmt.Fprintln(w, "CLI Commands")
+
+	for cmd := range GetCliFuncMap() {
+		fmt.Fprintln(w, "\t"+cmd)
+	}
+
+	fmt.Fprintln(w)
+	fmt.Fprintln(w, "API Usage (flag -a)")
+	fmt.Fprintln(w, "\tSee API documentation for further help")
 }
-
-// func GetApiCommand(args []string) (string, error) {
-
-// }
 
 func GetFlagSet(args []string, cfg *GoshelfConfig) *flag.FlagSet {
 	gsFlagSet := flag.NewFlagSet("gsFlagSet", flag.ContinueOnError)

@@ -13,13 +13,13 @@ import (
 )
 
 var cliFuncMap = map[string]func(*GoshelfConfig){
-	"bookcreate":       CliBookCreate,
-	"bookget":          CliBookGet,
-	"bookremove":       CliBookRemove,
-	"bookfilter":       CliBookFilter,
-	"collectioncreate": CliCollectionCreate,
-	"collectionget":    CliCollectionGet,
-	"collectionremove": CliCollectionRemove,
+	"BOOKCREATE":       CliBookCreate,
+	"BOOKGET":          CliBookGet,
+	"BOOKREMOVE":       CliBookRemove,
+	"BOOKFILTER":       CliBookFilter,
+	"COLLECTIONCREATE": CliCollectionCreate,
+	"COLLECTIONGET":    CliCollectionGet,
+	"COLLECTIONREMOVE": CliCollectionRemove,
 }
 
 func GetCliFuncMap() map[string]func(*GoshelfConfig) {

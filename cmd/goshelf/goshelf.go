@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/Max-Clark/goshelf/cmd/db"
 	pg "github.com/Max-Clark/goshelf/cmd/db/postgresql"
@@ -41,7 +42,7 @@ func CliStart(cfg GoshelfConfig, flagSet *flag.FlagSet) {
 	fMap := GetCliFuncMap()
 
 	for _, v := range noFlagArgs {
-		f, ok := fMap[v]
+		f, ok := fMap[strings.ToUpper(v)]
 
 		// If the function given exists, run it
 		if ok {
@@ -52,7 +53,7 @@ func CliStart(cfg GoshelfConfig, flagSet *flag.FlagSet) {
 
 	w := os.Stderr
 	fmt.Fprintln(w, "Invalid, missing, or unrecognized CLI command")
-	PrintFlagUsage(w, flagSet)
+	PrintUsage(w, flagSet)
 }
 
 func Goshelf(args []string) {
