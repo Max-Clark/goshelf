@@ -60,8 +60,6 @@ func Goshelf(args []string) {
 
 	flagSet.Parse(args)
 
-	fmt.Println(cfg)
-
 	if err != nil {
 		log.Fatal(err)
 	}

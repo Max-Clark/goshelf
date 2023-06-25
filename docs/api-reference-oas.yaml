@@ -25,7 +25,7 @@ servers:
 #     DELETE - delete collection
 
 paths:
-  /book:
+  /book/:
     get:
       tags:
         - Books
@@ -145,7 +145,7 @@ paths:
                 $ref: '#/components/schemas/GenericFailure'
 
 
-  /collection:
+  /collection/:
     get:
       tags:
         - Collections
