@@ -186,7 +186,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Collection"
+              type: object
+              properties:
+                title: 
+                  $ref: '#/components/schemas/Title'
+                bookIds: 
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Serial'
       responses:
         '200':
           description: Successful operation

@@ -3,8 +3,16 @@ package postgresql
 import (
 	"database/sql"
 
+	db "github.com/Max-Clark/goshelf/cmd/db"
 	v1 "github.com/Max-Clark/goshelf/cmd/model/v1"
 )
+
+// The struct for PgDb that
+type PgDb struct {
+	SqlDb         *sql.DB
+	SchemaVersion string // Used for migrations
+	Config        db.ConnectionConfig
+}
 
 // Scans rows for one row expecting one integer parameter.
 // Returns nil, nil for no rows returned or nil rows pointer.
