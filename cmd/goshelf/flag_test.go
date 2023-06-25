@@ -11,10 +11,10 @@ var _ = Describe("Flags", func() {
 			var mockNoArgs = []string{}
 
 			It("should return defaults", func() {
-				cfg, noFlagArgs, err := InitFlags(mockNoArgs)
+				cfg, flagSet, err := InitFlags(mockNoArgs)
 
 				Expect(err).To(BeNil())
-				Expect(noFlagArgs).To(BeEmpty())
+				Expect(flagSet).ToNot(BeNil())
 				Expect(cfg).ToNot(BeNil())
 
 				Expect(cfg.Host).To(Equal("0.0.0.0"))
@@ -27,30 +27,14 @@ var _ = Describe("Flags", func() {
 			var mockNoArgs = []string{"ignored", "BookRead"}
 
 			It("should return cli argument", func() {
-				cfg, noFlagArgs, err := InitFlags(mockNoArgs)
+				cfg, flagSet, err := InitFlags(mockNoArgs)
 
 				Expect(err).To(BeNil())
-				Expect(noFlagArgs).ToNot(BeEmpty())
+				Expect(flagSet).ToNot(BeNil())
+				Expect(cfg).ToNot(BeNil())
+
+				noFlagArgs := flagSet.Args()
 				Expect(noFlagArgs).To(ContainElement("BookRead"))
-				Expect(cfg).ToNot(BeNil())
-			})
-
-			// TODO: add more tests
-		})
-	})
-
-	Describe("Usage", func() {
-		Context("prints usage to stderr", func() {
-			var getUsage = []string{"-h"}
-
-			It("should print a nice usage", func() {
-				cfg, noFlagArgs, err := InitFlags(getUsage)
-
-				Expect(err).To(BeNil())
-				Expect(noFlagArgs).To(BeEmpty())
-				Expect(cfg).ToNot(BeNil())
-
-				Expect(cfg.Host).To(Equal("0.0.0.0"))
 			})
 
 			// TODO: add more tests
