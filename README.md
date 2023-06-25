@@ -6,7 +6,7 @@ Goshelf is a combined CLI/REST API server that allows you to save your favorite 
 
 To use, run go from the command line:
 
-`go run ./cmd/main [FLAGS] [CLI Function]`
+`go run ./cmd/main [FLAGS] [CLI Command]`
 
 Goshelf has two modes of operation: CLI and API.
 
@@ -37,6 +37,18 @@ Goshelf utilizes command flags to configure itself. The following flags are avai
 -du Database user, default postgres
 -p API mode: Host port, default 8080
 -s API mode: Host address, default 0.0.0.0
+```
+
+## CLI Commands
+
+```
+BOOKCREATE
+BOOKGET
+BOOKREMOVE
+BOOKFILTER
+COLLECTIONCREATE
+COLLECTIONGET
+COLLECTIONREMOVE
 ```
 
 ### API

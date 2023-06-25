@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Returns all characters up to '\n' from a reader
 func GetCliPrompt(prompt *string, reader io.Reader) (*string, error) {
 	fmt.Print(*prompt)
 
@@ -23,6 +24,8 @@ func GetCliPrompt(prompt *string, reader io.Reader) (*string, error) {
 	return &ret, nil
 }
 
+// Returns an int from a reader. Will perform retries if user
+// enters invalid character. User entering /n will return nil.
 func GetIntFromCli(prompt *string, r io.Reader, w io.Writer) (*int, error) {
 	for {
 		valStr, err := GetCliPrompt(prompt, r)

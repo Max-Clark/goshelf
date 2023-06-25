@@ -1,3 +1,30 @@
+/*
+Goshelf is a radical book and book collection storage software!
+
+Usage: goshelf [FLAGS] [CLI Command]
+        -a Run in API mode, default false
+        -dh Database address, default 0.0.0.0
+        -dn Database name, default postgres
+        -dp Database port, default 5432
+        -dpw Database password, default ""
+        -ds Database SSL mode, default postgres
+        -du Database user, default postgres
+        -p API mode: Host port, default 8080
+        -s API mode: Host address, default 0.0.0.0
+
+CLI Commands
+        BOOKCREATE
+        BOOKGET
+        BOOKREMOVE
+        BOOKFILTER
+        COLLECTIONCREATE
+        COLLECTIONGET
+        COLLECTIONREMOVE
+
+API Usage (flag -a)
+        See API documentation for further help
+*/
+
 package goshelf
 
 import (
